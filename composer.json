@@ -1,0 +1,21 @@
+{
+	"name": "chikeet/horse-path",
+	"description": "Horse path finder",
+	"type": "project",
+	"require-dev": {
+		"nette/tester": "^2.3",
+		"mockery/mockery": "^1.3.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"Chikeet\\HorsePath\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Chikeet\\HorsePath\\Tests\\": "tests/cases/unit"
+		}
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true
+}
