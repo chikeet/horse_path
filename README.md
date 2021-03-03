@@ -1,0 +1,1 @@
+chikeet_horse_path
