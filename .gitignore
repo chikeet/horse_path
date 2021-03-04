@@ -4,3 +4,5 @@
 vendor/
 
 tests/cases/unit/HorsePath/Utils/output/
+
+tests/cases/unit/HorsePath/Model/output/

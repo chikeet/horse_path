@@ -47,7 +47,7 @@ class UuidGenerator
         if(!is_string($value)){
             return false;
         }
-        return preg_match(self::UUID4_PATTERN, $value);
+        return preg_match(self::UUID4_PATTERN, $value) === 1;
 	}
 
 }

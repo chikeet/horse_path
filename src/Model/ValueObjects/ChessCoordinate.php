@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Chikeet\HorsePath\ValueObjects;
+namespace Chikeet\HorsePath\Model\ValueObjects;
 
 use function array_search;
 use function in_array;
+use function strtolower;
 
 /**
  * Represents single chess coordinate. Used in @see ChessPosition.
@@ -26,7 +27,7 @@ class ChessCoordinate
     public function __construct(int $rawValue)
     {
         if ($rawValue < self::MIN_VALUE || $rawValue > self::MAX_VALUE) {
-            throw new \App\Model\ValueObject\Exceptions\ChessCoordinateOutOfAllowedRangeException($rawValue, self::MIN_VALUE, self::MAX_VALUE);
+            throw new \Chikeet\HorsePath\Model\ValueObjects\Exceptions\ChessCoordinateOutOfAllowedRangeException($rawValue, self::MIN_VALUE, self::MAX_VALUE);
         }
         $this->rawValue = $rawValue;
     }
@@ -59,18 +60,19 @@ class ChessCoordinate
     }
 
     /**
-     * Creates the coordinate from a letter if valid.
+     * Creates the coordinate from a letter in range A to H (case insensitive).
      * @param string $letter
      * @return ChessCoordinate
      *
-     * @throws \App\Model\ValueObject\Exceptions\InvalidChessCoordinateLetterException
+     * @throws \Chikeet\HorsePath\Model\ValueObjects\Exceptions\InvalidChessCoordinateLetterException
      */
     public static function createFromLetter(string $letter): ChessCoordinate
     {
-        if (!in_array($letter, self::LETTERS)) {
-            throw new \App\Model\ValueObject\Exceptions\InvalidChessCoordinateLetterException($letter);
+        $lowercasedLetter = strtolower($letter);
+        if (!in_array($lowercasedLetter, self::LETTERS)) {
+            throw new \Chikeet\HorsePath\Model\ValueObjects\Exceptions\InvalidChessCoordinateLetterException($letter);
         }
-        $intValue = array_search($letter, self::LETTERS);
+        $intValue = array_search($lowercasedLetter, self::LETTERS);
         return new self ($intValue);
     }
 
@@ -79,9 +81,9 @@ class ChessCoordinate
      * @param int $humanReadableInt
      * @return ChessCoordinate
      *
-     * @throws \App\Model\ValueObject\Exceptions\InvalidChessCoordinateLetterException
+     * @throws \Chikeet\HorsePath\Model\ValueObjects\Exceptions\InvalidChessCoordinateLetterException
      */
-    public static function createFromInt(int $humanReadableInt): ChessCoordinate
+    public static function createFromHumanReadableInt(int $humanReadableInt): ChessCoordinate
     {
         $intValue = $humanReadableInt - 1;
         return new self ($intValue);

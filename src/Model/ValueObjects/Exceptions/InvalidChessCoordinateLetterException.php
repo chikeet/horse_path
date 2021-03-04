@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model\ValueObject\Exceptions;
+namespace Chikeet\HorsePath\Model\ValueObjects\Exceptions;
 
 use InvalidArgumentException;
 use Throwable;

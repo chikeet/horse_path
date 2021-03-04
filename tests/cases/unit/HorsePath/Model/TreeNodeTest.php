@@ -28,7 +28,7 @@ class TreeNodeTest extends TestCase
      */
     public function testRoot(): void
 	{
-	    $payload = new stdClass();
+	    $payload = new stdClass;
 		$treeNode = new TreeNode(null, $payload);
 
 		Assert::equal($payload, $treeNode->getPayload());
@@ -42,27 +42,29 @@ class TreeNodeTest extends TestCase
      */
     public function testLeafWithParent(): void
 	{
-	    $payload = new stdClass();
+	    $payload = new stdClass;
 		$parent = new TreeNode(null, $payload);
 
-		$payload2 = new stdClass();
+		$payload2 = new stdClass;
 		$treeNode = new TreeNode($parent, $payload2);
 
 		Assert::equal($parent, $treeNode->getParent());
-		Assert::false($treeNode->isLeaf());
+		Assert::true($treeNode->isLeaf());
+		Assert::false($parent->isLeaf());
 	}
 
     /**
      * @covers ::__construct
+     * @covers ::addChild
      * @covers ::getParent
      * @covers ::isLeaf
      */
     public function testAddChild(): void
 	{
-	    $payload = new stdClass();
+	    $payload = new stdClass;
 		$parent = new TreeNode(null, $payload);
 
-		$payload2 = new stdClass();
+		$payload2 = new stdClass;
 		$child = new TreeNode(null, $payload2);
 
 		$parent->addChild($child);

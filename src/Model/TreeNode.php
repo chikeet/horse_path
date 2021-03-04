@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace Chikeet\HorsePath\Model;
 
 use Chikeet\HorsePath\Utils\UuidGenerator;
-use Chikeet\HorsePath\ValueObjects\Uuid4;
+use Chikeet\HorsePath\Model\ValueObjects\Uuid4;
 
 class TreeNode
 {
     /** @var Uuid4 unique id for easy leaves management within a tree */
     private Uuid4 $id;
 
-    private ?TreeNode $parent;
+    private ?TreeNode $parent = null;
 
     /** @var array<string, TreeNode> */
     private array $children = [];
@@ -29,13 +29,19 @@ class TreeNode
         $this->payload = $payload;
 
         if ($parent instanceof TreeNode) {
-            $this->parent = $parent;
+            $parent->addChild($this);
         }
+    }
+
+    private function setParent(TreeNode $parent): void
+    {
+        $this->parent = $parent;
     }
 
     public function addChild(TreeNode $child): void
     {
         $this->children[$child->getId()->getRaw()] = $child;
+        $child->setParent($this);
     }
 
     public function isLeaf(): bool
@@ -56,6 +62,11 @@ class TreeNode
     public function getPayload(): object
     {
         return $this->payload;
+    }
+
+    public function equals(TreeNode $other): bool
+    {
+        return $this->getId()->equals($other->getId());
     }
 
     private function generateId(): void

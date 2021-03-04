@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Chikeet\HorsePath\Utils;
 
-use Chikeet\HorsePath\ValueObjects\ChessCoordinate;
-use Chikeet\HorsePath\ValueObjects\ChessPosition;
+use Chikeet\HorsePath\Model\ValueObjects\ChessCoordinate;
+use Chikeet\HorsePath\Model\ValueObjects\ChessPosition;
 
 class HorseMovesFinder
 {
@@ -40,7 +40,7 @@ class HorseMovesFinder
                 $newXCoordinate = new ChessCoordinate($newRawX);
                 $newYCoordinate = new ChessCoordinate($newRawY);
             	$newPositions[] = new ChessPosition($newXCoordinate, $newYCoordinate);
-            } catch (\App\Model\ValueObject\Exceptions\ChessCoordinateOutOfAllowedRangeException $e) {
+            } catch (\Chikeet\HorsePath\Model\ValueObjects\Exceptions\ChessCoordinateOutOfAllowedRangeException $e) {
             	// invalid coordinate, ignore
             }
         }

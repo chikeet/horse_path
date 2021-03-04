@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace Chikeet\HorsePath\Utils;
 
 use Chikeet\HorsePath\Model\TreeNode;
-use Chikeet\HorsePath\ValueObjects\ChessPosition;
+use Chikeet\HorsePath\Model\ValueObjects\ChessPosition;
 
 use function array_merge;
 use function array_reverse;
+use function array_shift;
 
 class TreeToPathConverter
 {
@@ -21,12 +22,12 @@ class TreeToPathConverter
     public static function createPathFromTreeNodes(TreeNode $startTreeNode, TreeNode $endTreeNode, bool $reversePath): array
     {
         $startPositions = self::getPositionsFromTreeNodePath($startTreeNode);
+        $reversedStartPositions = array_reverse($startPositions); // since start tree goes from matching position to start and therefore positions in it are in reversed order
+
         $endPositions = self::getPositionsFromTreeNodePath($endTreeNode);
+        array_shift($endPositions); // remove first position since it's included in startPositions as well
 
-        array_pop($endPositions); // remove last position since it's included in startPositions as well
-        $reversedEndPositions = array_reverse($endPositions); // since end tree goes from end to start and therefore positions in it are in reversed order
-
-        $path = array_merge($startPositions, $reversedEndPositions);
+        $path = array_merge($reversedStartPositions, $endPositions);
 
         return $reversePath ? array_reverse($path) : $path;
     }

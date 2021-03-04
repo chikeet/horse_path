@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Chikeet\HorsePath\ValueObjects;
+namespace Chikeet\HorsePath\Model\ValueObjects;
 
 /**
  * Represents chess position. Consists of two @see ChessCoordinate.
@@ -23,6 +23,11 @@ class ChessPosition
         $this->yCoordinate = $yCoordinate;
     }
 
+    public function __toString(): string
+    {
+        return $this->toHumanReadableString();
+    }
+
     /**
      * Returns position coordinates as an array of two numeric coordinates.
      * @return array<int, int>
@@ -36,7 +41,7 @@ class ChessPosition
      * Returns position coordinates as a string consisting of an alphabetic and numeric coordinate.
      * @return string
      */
-    public function getHumanReadable(): string
+    public function toHumanReadableString(): string
     {
         return sprintf("%s%d", $this->xCoordinate->toLetter(), $this->yCoordinate->toHumanReadableInt());
     }
@@ -46,7 +51,7 @@ class ChessPosition
      * @param ChessPosition $other
      * @return bool
      */
-    public function equals(ChessPosition $other)
+    public function equals(ChessPosition $other): bool
     {
         return $this->getRaw() === $other->getRaw();
     }

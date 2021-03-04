@@ -7,45 +7,42 @@ use Chikeet\HorsePath\Model\TreeNode;
 use Chikeet\HorsePath\Utils\ArrayValidator;
 use Chikeet\HorsePath\Utils\HorseMovesFinder;
 use Chikeet\HorsePath\Utils\TreeToPathConverter;
-use Chikeet\HorsePath\ValueObjects\ChessPosition;
+use Chikeet\HorsePath\Model\ValueObjects\ChessPosition;
 
 class PathFinder
 {
-    private const MAX_ITERATIONS = 10;
 
     /**
      * Method to find optimal chess horse path from start to end position.
-     * @param ChessPosition $start
-     * @param ChessPosition $end
+     * @param ChessPosition $startPosition
+     * @param ChessPosition $endPosition
      * @return array<int, ChessPosition>
      */
-    public function findShortestHorsePath(ChessPosition $start, ChessPosition $end): array
+    public static function findShortestHorsePath(ChessPosition $startPosition, ChessPosition $endPosition): array
     {
         // return start position if start and end are the same
-        if ($start->equals($end)) {
-            return [$start];
+        if ($startPosition->equals($endPosition)) {
+            return [$startPosition];
         }
 
         // init trees for star and end path
-        $startTreeRoot = new TreeNode(null, $start);
+        $startTreeRoot = new TreeNode(null, $startPosition);
         $startTree = new Tree($startTreeRoot);
 
-        $endTreeRoot = new TreeNode(null, $start);
+        $endTreeRoot = new TreeNode(null, $endPosition);
         $endTree = new Tree($endTreeRoot);
 
-        $iterations = 0; # TODO: remove after test that all paths are possible to find
-        while (!isset($horsePath) && $iterations <= self::MAX_ITERATIONS) {
+        while (!isset($horsePath)) {
             // find all possible next steps for start path and check if there is match with end path
-            $horsePath = $this->processPossibleNextMoves($startTree, $endTree, true);
+            $horsePath = self::processPossibleNextMoves($startTree, $endTree, true);
             if ($horsePath !== null) {
                 break;
             }
             // find all possible next steps for end path and check if there is match with start path
-            $horsePath = $this->processPossibleNextMoves($endTree, $startTree, false);
+            $horsePath = self::processPossibleNextMoves($endTree, $startTree, false);
             if ($horsePath !== null) {
                 break;
             }
-            $iterations++;
         }
         return $horsePath;
     }
@@ -56,7 +53,7 @@ class PathFinder
      * @param bool $isStartTree true if $tree is startTree (a tree with root on start position)
      * @return array|null
      */
-    private function processPossibleNextMoves(Tree $tree, Tree $otherTree, bool $isStartTree): ?array
+    private static function processPossibleNextMoves(Tree $tree, Tree $otherTree, bool $isStartTree): ?array
     {
         foreach ($tree->getLeaves() as $leaf) {
             /** @var ChessPosition $currentPosition */
@@ -67,9 +64,10 @@ class PathFinder
                 $newNode = new TreeNode($leaf, $newPosition);
                 $tree->addChildNode($newNode, $leaf);
 
-                $matchingOtherTreeLeaf = $this->findMatchingTreeNodeInArray($newNode, $otherTree->getLeaves());
+                $matchingOtherTreeLeaf = self::findMatchingTreeNodeInArray($newNode, $otherTree->getLeaves());
                 if ($matchingOtherTreeLeaf instanceof TreeNode) {
-                    return TreeToPathConverter::createPathFromTreeNodes($newNode, $matchingOtherTreeLeaf, $isStartTree);
+                    $reversePath = !$isStartTree;
+                    return TreeToPathConverter::createPathFromTreeNodes($newNode, $matchingOtherTreeLeaf, $reversePath);
                 }
             }
         }
@@ -81,7 +79,7 @@ class PathFinder
      * @param array<string, TreeNode> $otherNodes
      * @return ?TreeNode
      */
-    private function findMatchingTreeNodeInArray(TreeNode $treeNode, array $otherNodes): ?TreeNode
+    private static function findMatchingTreeNodeInArray(TreeNode $treeNode, array $otherNodes): ?TreeNode
     {
         ArrayValidator::validateEveryIsInstanceOf($otherNodes, TreeNode::class, 'otherNodes');
 
