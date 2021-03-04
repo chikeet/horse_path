@@ -5,6 +5,7 @@ namespace App\Model\ValueObject\Exceptions;
 
 use InvalidArgumentException;
 use Throwable;
+
 use function sprintf;
 
 class InvalidChessCoordinateLetterException extends InvalidArgumentException

@@ -8,12 +8,18 @@ use function gettype;
 use function is_object;
 use function sprintf;
 
+/**
+ * Utility class for validation of array parameters.
+ */
 class ArrayValidator
 {
     /**
+     * Validates that every element of array is instance of given class.
      * @param array<mixed, mixed> $arrayToValidate
      * @param string $class
      * @param string $parameterName
+     *
+     * @throws \InvalidArgumentException if any of the elements is anything else than instance of required class
      */
     public static function validateEveryIsInstanceOf(array $arrayToValidate, string $class, string $parameterName): void
     {

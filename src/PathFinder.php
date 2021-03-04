@@ -9,12 +9,12 @@ use Chikeet\HorsePath\Utils\HorseMovesFinder;
 use Chikeet\HorsePath\Utils\TreeToPathConverter;
 use Chikeet\HorsePath\ValueObjects\ChessPosition;
 
-# TODO: add comments where needed
 class PathFinder
 {
     private const MAX_ITERATIONS = 10;
 
     /**
+     * Method to find optimal chess horse path from start to end position.
      * @param ChessPosition $start
      * @param ChessPosition $end
      * @return array<int, ChessPosition>
@@ -50,6 +50,12 @@ class PathFinder
         return $horsePath;
     }
 
+    /**
+     * @param Tree $tree tree where new nodes are added
+     * @param Tree $otherTree the other tree to compare for leaves position match
+     * @param bool $isStartTree true if $tree is startTree (a tree with root on start position)
+     * @return array|null
+     */
     private function processPossibleNextMoves(Tree $tree, Tree $otherTree, bool $isStartTree): ?array
     {
         foreach ($tree->getLeaves() as $leaf) {

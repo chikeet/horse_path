@@ -2,6 +2,9 @@
 	"name": "chikeet/horse-path",
 	"description": "Horse path finder",
 	"type": "project",
+	"require": {
+		"php": "^7.4"
+	},
 	"require-dev": {
 		"nette/tester": "^2.3",
 		"mockery/mockery": "^1.3.1"

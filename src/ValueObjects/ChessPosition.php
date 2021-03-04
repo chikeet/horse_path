@@ -3,12 +3,20 @@ declare(strict_types=1);
 
 namespace Chikeet\HorsePath\ValueObjects;
 
+/**
+ * Represents chess position. Consists of two @see ChessCoordinate.
+ */
 class ChessPosition
 {
     private ChessCoordinate $xCoordinate;
 
     private ChessCoordinate $yCoordinate;
 
+    /**
+     * ChessPosition constructor.
+     * @param ChessCoordinate $xCoordinate (usually alphabetic)
+     * @param ChessCoordinate $yCoordinate (usually numeric)
+     */
     public function __construct(ChessCoordinate $xCoordinate, ChessCoordinate $yCoordinate)
     {
         $this->xCoordinate = $xCoordinate;
@@ -16,6 +24,7 @@ class ChessPosition
     }
 
     /**
+     * Returns position coordinates as an array of two numeric coordinates.
      * @return array<int, int>
      */
     public function getRaw(): array
@@ -24,13 +33,19 @@ class ChessPosition
     }
 
     /**
-     * @return array<int, string|int>
+     * Returns position coordinates as a string consisting of an alphabetic and numeric coordinate.
+     * @return string
      */
-    public function getHumanReadable(): array
+    public function getHumanReadable(): string
     {
-        return [$this->xCoordinate->toLetter(), $this->yCoordinate->getRaw() + 1];
+        return sprintf("%s%d", $this->xCoordinate->toLetter(), $this->yCoordinate->toHumanReadableInt());
     }
 
+    /**
+     * Compares equality of two chess positions.
+     * @param ChessPosition $other
+     * @return bool
+     */
     public function equals(ChessPosition $other)
     {
         return $this->getRaw() === $other->getRaw();

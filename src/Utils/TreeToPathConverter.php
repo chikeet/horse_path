@@ -12,6 +12,7 @@ use function array_reverse;
 class TreeToPathConverter
 {
     /**
+     * Converts two tree nodes to resulting path represented by an array of @see ChessPosition instances.
      * @param TreeNode $startTreeNode
      * @param TreeNode $endTreeNode
      * @param bool $reversePath
@@ -21,6 +22,8 @@ class TreeToPathConverter
     {
         $startPositions = self::getPositionsFromTreeNodePath($startTreeNode);
         $endPositions = self::getPositionsFromTreeNodePath($endTreeNode);
+
+        array_pop($endPositions); // remove last position since it's included in startPositions as well
         $reversedEndPositions = array_reverse($endPositions); // since end tree goes from end to start and therefore positions in it are in reversed order
 
         $path = array_merge($startPositions, $reversedEndPositions);
@@ -29,6 +32,7 @@ class TreeToPathConverter
     }
 
     /**
+     * Converts single tree node path to array of @see ChessPosition instances.
      * @param TreeNode $node
      * @return array<int, ChessPosition>
      */

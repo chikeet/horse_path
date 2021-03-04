@@ -17,7 +17,7 @@ class Uuid4
         $this->rawValue = $rawUuid4;
     }
 
-    public function getRaw()
+    public function getRaw(): string
     {
         return $this->rawValue;
     }
